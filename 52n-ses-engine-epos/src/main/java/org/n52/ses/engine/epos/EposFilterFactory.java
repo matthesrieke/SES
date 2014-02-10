@@ -33,13 +33,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.apache.muse.util.xml.XPathUtils;
-import org.apache.muse.util.xml.XmlUtils;
-import org.apache.muse.ws.notification.Filter;
-import org.apache.muse.ws.notification.WsnConstants;
-import org.apache.muse.ws.notification.faults.InvalidFilterFault;
-import org.apache.muse.ws.notification.impl.FilterFactoryHandler;
-import org.apache.muse.ws.resource.basefaults.BaseFault;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.epos.engine.filter.XPathConfiguration;
@@ -54,12 +47,18 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class EposFilterFactory implements FilterFactoryHandler {
+public class EposFilterFactory {
+	
+	public static final String NAMESPACE_URI = "http://docs.oasis-open.org/wsn/b-2";
+	public static final String XPATH_NAMESPACE_URI = 
+	        "http://www.w3.org/TR/1999/REC-xpath-19991116";
+    public static final QName MESSAGE_CONTENT_QNAME = 
+            new QName(NAMESPACE_URI, "MessageContent");
+    public static final String DIALECT = "Dialect";
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EposFilterFactory.class);
 
-	@Override
 	public boolean accepts(QName filterName, String filterDialect) {
 		if (filterDialect.equals(SesConstants.SES_FILTER_LEVEL_2_DIALECT)
 				|| filterDialect
@@ -67,8 +66,8 @@ public class EposFilterFactory implements FilterFactoryHandler {
 			return true;
 		}
 
-		if (filterName.equals(WsnConstants.MESSAGE_CONTENT_QNAME)
-				&& filterDialect.equals(XPathUtils.NAMESPACE_URI)) {
+		if (filterName.equals(MESSAGE_CONTENT_QNAME)
+				&& filterDialect.equals(XPATH_NAMESPACE_URI)) {
 			return true;
 		}
 		
@@ -79,41 +78,63 @@ public class EposFilterFactory implements FilterFactoryHandler {
 		return false;
 	}
 
-	@Override
-	public Filter newInstance(Element filterXML) throws BaseFault {
+	public EposFilter newInstance(Element filterXML) throws FilterInstantiationException {
 		Object input = prepareInput(filterXML);
 
-		try {
-			EposFilter result = FilterInstantiationRepository.Instance
-					.instantiate(input);
-			return new EposFilterWrapper(result);
-		} catch (FilterInstantiationException e) {
-			logger.warn(e.getMessage(), e);
-			throw new InvalidFilterFault(e);
-		}
+		EposFilter result = FilterInstantiationRepository.Instance
+				.instantiate(input);
+		return result;
 	}
 
-	private Object prepareInput(Element filterXML) throws InvalidFilterFault {
+	private Object prepareInput(Element filterXML) throws FilterInstantiationException {
 		Object input = null;
 		QName qn = new QName(filterXML.getNamespaceURI(),
 				filterXML.getLocalName());
-		String dialect = filterXML.getAttribute(WsnConstants.DIALECT);
+		String dialect = filterXML.getAttribute(DIALECT);
 
-		if (qn.equals(WsnConstants.MESSAGE_CONTENT_QNAME)
-				&& dialect.equals(XPathUtils.NAMESPACE_URI)) {
-		    input = new XPathConfiguration(XmlUtils.extractText(filterXML), 
+		if (qn.equals(MESSAGE_CONTENT_QNAME)
+				&& dialect.equals(XPATH_NAMESPACE_URI)) {
+		    input = new XPathConfiguration(stripText(filterXML), 
 		    		getNamespaceDeclarations(filterXML));
 		} else {
 			try {
 				input = XmlObject.Factory.parse(findContentChild(filterXML));
 			} catch (XmlException e) {
-				logger.warn(e.getMessage(), e);
-				throw new InvalidFilterFault(e);
+				logger.warn(e.getMessage());
+				throw new FilterInstantiationException(e);
 			}
 		}
+		
 		return input;
 	}
 
+
+	private String stripText(Node filterXML) {
+		NodeList list = filterXML.getChildNodes();
+		
+		Node item;
+		for (int i = 0; i < list.getLength(); i++) {
+			item = list.item(i);
+			
+			if (item.getNodeType() == Node.TEXT_NODE) {
+				String result = item.getNodeValue();
+				if (result != null) {
+					result = result.trim();
+					if (!result.isEmpty()) {
+						return result;
+					}
+				}
+			}
+			else {
+				String result = stripText(item);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		
+		return null;
+	}
 
 	private Element findContentChild(Element filterXML) {
 		NodeList nodeList = filterXML.getChildNodes();

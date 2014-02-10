@@ -41,13 +41,13 @@ import net.opengis.gml.x32.TimePeriodType;
 import net.opengis.gml.x32.TimePositionType;
 import net.opengis.gml.x32.TimePrimitivePropertyType;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
 import org.n52.ses.api.exception.GMLParseException;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;

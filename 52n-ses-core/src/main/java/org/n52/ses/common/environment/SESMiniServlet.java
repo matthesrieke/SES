@@ -53,7 +53,7 @@ import org.apache.muse.util.xml.XmlUtils;
 import org.apache.muse.ws.addressing.soap.SoapConstants;
 import org.apache.muse.ws.addressing.soap.SoapFault;
 import org.apache.muse.ws.addressing.soap.SoapUtils;
-import org.n52.ses.api.ISESFilePersistence;
+import org.n52.ses.api.Persistence;
 import org.n52.ses.common.environment.handler.GetRequestHandler;
 import org.n52.ses.common.environment.handler.GetCapabilitiesHandler;
 import org.n52.ses.common.environment.handler.WSDLProvisionHandler;
@@ -337,7 +337,7 @@ public class SESMiniServlet extends MiniServlet {
 		MiniIsolationLayer isolationLayer = new SESMiniIsolationLayer(request, context);
 		isolationLayer.initialize();
 		
-		ConfigurationRegistry.getInstance().setFilePersistence((ISESFilePersistence) isolationLayer.getRouter().getPersistence());
+		ConfigurationRegistry.getInstance().setFilePersistence((Persistence) isolationLayer.getRouter().getPersistence());
 		
 		return isolationLayer;
 	}

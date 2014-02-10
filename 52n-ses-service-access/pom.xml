@@ -47,22 +47,6 @@
 			<artifactId>52n-wps-xml</artifactId>
 		</dependency>
 		<dependency>
-			<artifactId>amused-util-xml</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-util</artifactId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-core</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-wsa-soap</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
 		</dependency>

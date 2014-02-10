@@ -38,7 +38,7 @@ public class ConfigurationRegistryMockup {
 	
 	public static void init() {
 		logger.info("Using config file at {}", ConfigurationRegistryMockup.class.getResource("/ses_mockup_config.xml"));
-		ConfigurationRegistry.init(ConfigurationRegistryMockup.class.getResourceAsStream("/ses_mockup_config.xml"), new EnvironmentMockup());		
+		ConfigurationRegistry.init(ConfigurationRegistryMockup.class.getResource("/ses_mockup_config.xml"));		
 	}
 
 }

@@ -31,7 +31,6 @@ package org.n52.ses.util.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.muse.util.xml.XmlUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oxf.xmlbeans.tools.XmlUtil;
@@ -216,7 +215,7 @@ public class XMLHelper {
 		if (elem != null) {
 			Node child = elem.getDomNode().getFirstChild();
 			if (child != null) {
-				return XmlUtils.toString(child).trim();
+				return XmlUtil.toString(child).trim();
 			}
 		}
 		return null;

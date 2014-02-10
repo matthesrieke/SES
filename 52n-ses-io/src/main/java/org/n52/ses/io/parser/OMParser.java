@@ -75,9 +75,6 @@ import net.opengis.swe.x101.TextBlockDocument.TextBlock;
 import net.opengis.swe.x101.TextDocument.Text;
 import net.opengis.swe.x101.TimeDocument.Time;
 
-import org.apache.muse.util.xml.XmlUtils;
-import org.apache.muse.ws.addressing.soap.SoapFault;
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.apache.xmlbeans.QNameSet;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -87,8 +84,11 @@ import org.n52.oxf.conversion.unit.CustomUnitConverter;
 import org.n52.oxf.conversion.unit.NumberWithUOM;
 import org.n52.oxf.conversion.unit.UOMTools;
 import org.n52.oxf.xmlbeans.parser.XMLBeansParser;
+import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
+import org.n52.ses.api.exception.ParserException;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.n52.ses.util.common.ConfigurationRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,8 +157,7 @@ public class OMParser extends AbstractParser {
 			observation = oDoc.getObservation();
 		}
 
-		if (observation == null) throw new SoapFault("No " +
-		"Observation found!");
+		if (observation == null) throw new ParserException("No Observation found!");
 
 		//the phenomenon/uom list
 		List<Map<String, Object>> pums = new LinkedList<Map<String, Object>>();
@@ -530,7 +529,7 @@ public class OMParser extends AbstractParser {
 		final String decimalS = textblock.getDecimalSeparator();
 
 		Element elem = (Element) array.getValues().getDomNode();
-		String values = XmlUtils.toString(elem.getFirstChild()).trim();
+		String values = XmlUtil.toString(elem.getFirstChild()).trim();
 
 		StringTokenizer line = new StringTokenizer(values, blockS);
 
@@ -879,7 +878,7 @@ public class OMParser extends AbstractParser {
 	 */
 	private Geometry getGeometryFromEnvelope(EnvelopeType et) throws com.vividsolutions.jts.io.ParseException {
 		Element elem = (Element) et.getUpperCorner().getDomNode();
-		String ucString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String ucString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] uc = ucString.split(" ");
 
 		int i = 0;
@@ -891,7 +890,7 @@ public class OMParser extends AbstractParser {
 
 		//get lower corner and split at " "
 		elem = (Element) et.getLowerCorner().getDomNode();
-		String lcString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String lcString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] lc = lcString.split(" ");
 
 		i = 0;
@@ -986,7 +985,7 @@ public class OMParser extends AbstractParser {
 			uom = "";
 			phen = component.getCategory().getDefinition().replaceAll(":", "__").replaceAll("\\.", "_");
 		} else {
-			throw new SoapFault("the " +
+			throw new ParserException("the " +
 					"DataComponentPropertyType is an unsupported type:" + component.getType());
 		}
 

@@ -26,20 +26,41 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api;
+package org.n52.ses.io.parser;
 
 import java.io.IOException;
+import java.util.List;
 
-import org.apache.muse.ws.addressing.EndpointReference;
-import org.apache.xmlbeans.XmlException;
+import org.junit.Assert;
+import org.junit.Test;
+import org.n52.ses.api.event.MapEvent;
+import org.n52.ses.api.ws.NotificationMessage;
+import org.n52.ses.api.ws.impl.NotificationMessageImpl;
+import org.n52.ses.io.parser.OM20Parser;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
-public interface ISESFilePersistence {
+public class OM20ParserTest extends AbstractParserTest {
 
-	int getPersistentPublisherCount();
+	@Test
+	public void testParsing() throws Exception {
+		NotificationMessage message = createMessage();
+		OM20Parser parser = new OM20Parser();
+		Assert.assertTrue("Parser does not support payload!", parser.accept(message));
+		List<MapEvent> result = parser.parse(message);
+		Assert.assertTrue("no events parsed!", result != null && !result.isEmpty());
+		double doubleResult = (Double) result.get(0).get("http://www.52north.org/test/observableProperty/1");
+		Assert.assertTrue("value not parsed", doubleResult == 0.28);
+	}
 	
-	int getPersistentSubscriberCount();
+	private NotificationMessage createMessage() throws IOException, SAXException {
+		NotificationMessage result = new NotificationMessageImpl();
+		result.addMessageContent(createObservation());
+		return result;
+	}
 
-	void removePattern(EndpointReference endpointReference, String patternXpath)
-			throws XmlException, IOException;
+	private Element createObservation() throws IOException, SAXException {
+		return createDocument(getClass().getResourceAsStream("om20-observation.xml")).getDocumentElement();
+	}
 	
 }

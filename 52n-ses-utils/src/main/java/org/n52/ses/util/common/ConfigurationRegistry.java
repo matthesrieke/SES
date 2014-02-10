@@ -31,25 +31,26 @@ package org.n52.ses.util.common;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import org.apache.muse.core.Environment;
-import org.apache.muse.ws.addressing.EndpointReference;
+import javax.xml.ws.EndpointReference;
+
 import org.n52.oxf.xmlbeans.parser.GMLAbstractFeatureCase;
 import org.n52.oxf.xmlbeans.parser.XMLBeansParser;
 import org.n52.ses.api.IUnitConverter;
 import org.n52.ses.api.IFilterEngine;
-import org.n52.ses.api.ISESFilePersistence;
+import org.n52.ses.api.Persistence;
 import org.n52.ses.api.common.FreeResourceListener;
 import org.n52.ses.api.common.GlobalConstants;
 import org.n52.ses.api.ws.IPublisherEndpoint;
 import org.n52.ses.api.ws.IRegisterPublisher;
 import org.n52.ses.api.ws.ISubscriptionManager;
+import org.n52.ses.api.ws.impl.EndpointReferenceImpl;
 import org.n52.ses.util.concurrent.IConcurrentNotificationHandler;
 import org.n52.ses.util.concurrent.ITimeoutEstimation;
 import org.n52.ses.util.unitconversion.SESUnitConverter;
@@ -278,12 +279,10 @@ public class ConfigurationRegistry {
 	private List<ISubscriptionManager> reresubs;
 	private List<IPublisherEndpoint> rerepubs;
 
-	private ISESFilePersistence filePersistence;
+	private Persistence filePersistence;
 	private IFilterEngine filterEngine;
 
 	private IRegisterPublisher registerPublisher;
-
-	private Environment environment;
 
 	private String subMgrWsdl;
 
@@ -298,28 +297,29 @@ public class ConfigurationRegistry {
 	 * @param defaultURI the default URI of the service
 	 * @param unitConverter 
 	 */
-	private ConfigurationRegistry(InputStream config, String defaultURI,
-			IUnitConverter unitConverter) {
+	private ConfigurationRegistry(URL config, IUnitConverter unitConverter) {
 		this.unitConverter = unitConverter;
-		
-		try {
-			this.sesPortTypeEPR = new EndpointReference(new URI("http://localhost/URIfailure"));
-			
-			if (defaultURI != null) {
-				this.sesPortTypeEPR = new EndpointReference(new URI(defaultURI));
-			}
-		} catch (URISyntaxException e1) {
-			logger.warn(e1.getMessage(), e1);
-		}
 		
 		/*
 		 * init parameters
 		 */
 		this.parameters = new SESProperties();
 		try {
-			this.parameters.load(config);
+			this.parameters.load(config.openStream());
 		} catch (IOException e) {
 			logger.warn(e.getMessage(), e);
+		}
+		
+		String defaultURI = this.parameters.getProperty(SES_INSTANCE);
+		try {
+			if (defaultURI != null && !defaultURI.isEmpty()) {
+				this.sesPortTypeEPR = new EndpointReferenceImpl(new URI(defaultURI));
+			}
+			else {
+				this.sesPortTypeEPR = new EndpointReferenceImpl(new URI("http://localhost/URIfailure"));				
+			}
+		} catch (URISyntaxException e1) {
+			logger.warn(e1.getMessage(), e1);
 		}
 		
 		/*
@@ -376,40 +376,23 @@ public class ConfigurationRegistry {
 	 * @param defaultURI Default muse-environment URI
 	 * @param unitConverter converter for units of measurement
 	 */
-	public static synchronized void init(Environment env) {
-		InputStream config = env.getDataResourceStream(ConfigurationRegistry.CONFIG_FILE);
-		init(config, env);
+	public static synchronized void init() {
+		URL config = ConfigurationRegistry.class.getResource(ConfigurationRegistry.CONFIG_FILE);
+		init(config);
 	}
 	
-	public static synchronized void init(InputStream config, Environment env) {
+	public static synchronized void init(URL config) {
 		if (_instance == null) {
 			if (logger.isInfoEnabled()) {
 				logger.info("initializing config from file {}...",
-						env.getDataResource(ConfigurationRegistry.CONFIG_FILE));
+						config);
 			}
-			
 			
 			SESUnitConverter unitConverter = new SESUnitConverter();
 			
-			_instance = new ConfigurationRegistry(config, env == null ? "" : env.getDefaultURI(), unitConverter);
-			_instance.setEnvironment(env);
+			_instance = new ConfigurationRegistry(config, unitConverter);
 			ConfigurationRegistry.class.notifyAll();
 		}
-	}
-	
-
-	/**
-	 * @param env the muse environment
-	 */
-	private void setEnvironment(Environment env) {
-		this.environment = env;
-	}
-
-	/**
-	 * @return the muse environment
-	 */
-	public Environment getEnvironment() {
-		return this.environment;
 	}
 
 	/**
@@ -498,14 +481,14 @@ public class ConfigurationRegistry {
 			
 	}
 	
-	public void setFilePersistence(ISESFilePersistence fp) {
+	public void setFilePersistence(Persistence fp) {
 		this.filePersistence = fp;
 		synchronized (this.rerepubs) {
 			this.rerepubs.notifyAll();
 		}
 	}
 
-	public ISESFilePersistence getFilePersistence() {
+	public Persistence getFilePersistence() {
 		return filePersistence;
 	}
 
@@ -561,8 +544,8 @@ public class ConfigurationRegistry {
 	 */
 	public String getSubMgrWsdl() {
 		if (this.subMgrWsdl == null) {
-			String tmp = getEnvironment().getDefaultURI().substring(0,
-					getEnvironment().getDefaultURI().lastIndexOf("/services"));
+			String tmp = this.parameters.getProperty(SES_INSTANCE).substring(0,
+					this.parameters.getProperty(SES_INSTANCE).lastIndexOf("/services"));
 			String subMgrUrl = tmp + "/services/" + GlobalConstants.SUBSCRIPTION_MANAGER_CONTEXT_PATH + "?wsdl";
 			return subMgrUrl;
 		}

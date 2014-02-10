@@ -28,8 +28,6 @@
  */
 package org.n52.ses.engine.epos;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,10 +35,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.apache.muse.ws.notification.Filter;
-import org.apache.muse.ws.notification.NotificationMessage;
-import org.apache.muse.ws.notification.impl.FilterCollection;
-import org.apache.muse.ws.notification.impl.FilterFactory;
 import org.n52.epos.engine.EposEngine;
 import org.n52.epos.engine.rules.RuleInstance;
 import org.n52.epos.event.EposEvent;
@@ -51,9 +45,10 @@ import org.n52.epos.rules.Rule;
 import org.n52.epos.transform.TransformationException;
 import org.n52.epos.transform.TransformationRepository;
 import org.n52.ses.api.IFilterEngine;
-import org.n52.ses.api.ws.EngineCoveredFilter;
+import org.n52.ses.api.event.EposFilterCollection;
 import org.n52.ses.api.ws.INotificationMessage;
 import org.n52.ses.api.ws.ISubscriptionManager;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -64,7 +59,6 @@ public class EposEngineWrapper implements IFilterEngine {
 	private Map<ISubscriptionManager, Rule> rules = new HashMap<ISubscriptionManager, Rule>();
 
 	public EposEngineWrapper() {
-		FilterFactory.getInstance().addHandler(new EposFilterFactory());
 	}
 	
 	@Override
@@ -90,8 +84,8 @@ public class EposEngineWrapper implements IFilterEngine {
 	}
 
 	@Override
-	public boolean registerFilter(final ISubscriptionManager subMgr, FilterCollection engineFilters) throws Exception {
-		List<EposFilter> filters = findEposFilters(engineFilters, new ArrayList<EposFilter>());
+	public boolean registerFilter(final ISubscriptionManager subMgr, EposFilterCollection engineFilters) throws Exception {
+		List<EposFilter> filters = engineFilters.getFilters();
 		
 		if (filters.isEmpty()) {
 			logger.info("No Epos filters found ({})", subMgr.getFilter());
@@ -119,22 +113,6 @@ public class EposEngineWrapper implements IFilterEngine {
 		return true;
 	}
 
-
-	private List<EposFilter> findEposFilters(Filter filter, List<EposFilter> resultList) {
-		if (filter instanceof EngineCoveredFilter) {
-			EngineCoveredFilter ecf = (EngineCoveredFilter) filter;
-			Object specific = ecf.getEngineSpecificFilter();
-			if (specific instanceof EposFilter) {
-				resultList.add((EposFilter) specific);	
-			}
-		}
-		else if (filter instanceof FilterCollection) {
-			for (Object f : ((FilterCollection) filter).getFilters()) {
-				findEposFilters((Filter) f, resultList);
-			}
-		}
-		return resultList;
-	}
 
 	@Override
 	public void unregisterFilter(ISubscriptionManager subMgr) throws Exception {

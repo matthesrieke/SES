@@ -28,19 +28,20 @@
  */
 package org.n52.ses.api.ws;
 
-import org.apache.muse.ws.addressing.EndpointReference;
-import org.apache.muse.ws.addressing.soap.SoapFault;
-import org.apache.muse.ws.notification.Filter;
+import javax.xml.ws.EndpointReference;
+import javax.xml.ws.soap.SOAPFaultException;
+
 import org.apache.xmlbeans.XmlObject;
+import org.n52.epos.filter.EposFilter;
 import org.n52.epos.rules.RuleListener;
 
 public interface ISubscriptionManager extends RuleListener {
 
-	void publish(INotificationMessage origMessage) throws SoapFault;
+	void publish(INotificationMessage origMessage) throws SOAPFaultException;
 
 	boolean sendSESNotificationMessge(XmlObject eventDoc);
 
-	Filter getFilter();
+	EposFilter getFilter();
 
 	void reRegister();
 	

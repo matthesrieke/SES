@@ -46,8 +46,8 @@ import net.opengis.gml.PolygonDocument;
 import net.opengis.gml.PolygonPropertyType;
 import net.opengis.gml.PolygonType;
 
-import org.apache.muse.util.xml.XmlUtils;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.exception.GMLParseException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -87,7 +87,7 @@ public class GML31Parser {
 	private static Geometry getGeometryFromEnvelope(EnvelopeType et) throws ParseException {
 		//get upper corner and split at " "
 		Element elem = (Element) et.getUpperCorner().getDomNode();
-		String ucString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String ucString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] uc = ucString.split(" ");
 
 		int i = 0;
@@ -99,7 +99,7 @@ public class GML31Parser {
 
 		//get lower corner and split at " "
 		elem = (Element) et.getLowerCorner().getDomNode();
-		String lcString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String lcString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] lc = lcString.split(" ");
 
 		i = 0;

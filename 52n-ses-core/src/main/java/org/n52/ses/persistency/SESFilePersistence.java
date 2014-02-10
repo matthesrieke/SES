@@ -52,7 +52,7 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oxf.xmlbeans.tools.XmlUtil;
-import org.n52.ses.api.ISESFilePersistence;
+import org.n52.ses.api.Persistence;
 import org.n52.ses.api.common.SensorMLConstants;
 import org.n52.ses.common.SensorML;
 import org.n52.ses.wsbr.RegisterPublisher;
@@ -71,7 +71,7 @@ import org.w3c.dom.Element;
  * @author matthes rieke <m.rieke@uni-muenster.de>
  *
  */
-public class SESFilePersistence extends AbstractFilePersistence implements RouterPersistence, ISESFilePersistence {
+public class SESFilePersistence extends AbstractFilePersistence implements RouterPersistence, Persistence {
 
 
 	private static final Logger logger = LoggerFactory

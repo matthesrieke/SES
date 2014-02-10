@@ -28,6 +28,19 @@
  */
 package org.n52.ses.api;
 
-public interface IEventModelGenerator {
+import java.io.IOException;
 
+import javax.xml.ws.EndpointReference;
+
+import org.apache.xmlbeans.XmlException;
+
+public interface Persistence {
+
+	int getPersistentPublisherCount();
+	
+	int getPersistentSubscriberCount();
+
+	void removePattern(EndpointReference endpointReference, String patternXpath)
+			throws XmlException, IOException;
+	
 }

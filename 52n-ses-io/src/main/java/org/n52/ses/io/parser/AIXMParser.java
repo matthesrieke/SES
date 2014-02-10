@@ -34,7 +34,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
 import org.n52.oxf.xmlbeans.parser.XMLBeansParser;
@@ -42,6 +41,7 @@ import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
 import org.n52.ses.api.exception.GMLParseException;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;

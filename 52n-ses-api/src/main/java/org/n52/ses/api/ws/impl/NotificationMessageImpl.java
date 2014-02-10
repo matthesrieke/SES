@@ -26,39 +26,36 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.io.parser.test;
+package org.n52.ses.api.ws.impl;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.muse.util.xml.XmlUtils;
-import org.apache.muse.ws.notification.NotificationMessage;
-import org.apache.muse.ws.notification.impl.SimpleNotificationMessage;
-import org.junit.Assert;
-import org.junit.Test;
-import org.n52.ses.api.event.MapEvent;
-import org.n52.ses.io.parser.OWS8Parser;
+import javax.xml.namespace.QName;
+
+import org.n52.ses.api.ws.NotificationMessage;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-public class OWS8ParserTest {
+public class NotificationMessageImpl implements NotificationMessage {
 
-	@Test
-	public void testParsing() throws Exception {
-		NotificationMessage message = createMessage();
-		OWS8Parser parser = new OWS8Parser();
-		List<MapEvent> result = parser.parse(message);
-		Assert.assertTrue("no events parsed!", result != null && !result.isEmpty());
-	}
-	
-	private NotificationMessage createMessage() throws IOException, SAXException {
-		SimpleNotificationMessage result = new SimpleNotificationMessage();
-		result.addMessageContent(createAIXMBasicMessage());
-		return result;
+	private Map<QName, Element> contents = new HashMap<QName, Element>();
+
+	@Override
+	public Element getMessageContent(QName qn) {
+		return contents.get(qn);
 	}
 
-	private Element createAIXMBasicMessage() throws IOException, SAXException {
-		return XmlUtils.createDocument(getClass().getResourceAsStream("aixmBasicMessage.xml")).getDocumentElement();
+	@Override
+	public Set<QName> getMessageContentNames() {
+		return Collections.unmodifiableSet(contents.keySet());
 	}
-	
+
+	@Override
+	public void addMessageContent(Element content) {
+		QName qn = new QName(content.getNamespaceURI(), content.getLocalName());
+		this.contents .put(qn, content);
+	}
+
 }

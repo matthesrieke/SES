@@ -61,34 +61,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-platform-mini</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-wsa-soap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-wsrf-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-wsrf-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-wsn-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.amused</groupId>
-			<artifactId>amused-wsn-impl</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>joda-time</groupId>

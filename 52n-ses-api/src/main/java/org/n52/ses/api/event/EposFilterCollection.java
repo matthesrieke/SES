@@ -26,39 +26,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.io.parser.test;
+package org.n52.ses.api.event;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.muse.util.xml.XmlUtils;
-import org.apache.muse.ws.notification.NotificationMessage;
-import org.apache.muse.ws.notification.impl.SimpleNotificationMessage;
-import org.junit.Assert;
-import org.junit.Test;
-import org.n52.ses.api.event.MapEvent;
-import org.n52.ses.io.parser.WXXMParser;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import org.n52.epos.filter.EposFilter;
 
-public class WXXMParserTest {
+/**
+ * A collection of filters to be provided to the EposEngine.
+ */
+public class EposFilterCollection {
+	
+	private List<EposFilter> filters = new ArrayList<EposFilter>();
 
-	@Test
-	public void testParsing() throws Exception {
-		NotificationMessage message = createMessage();
-		WXXMParser parser = new WXXMParser();
-		List<MapEvent> result = parser.parse(message);
-		Assert.assertTrue("no events parsed!", result != null && !result.isEmpty());
+	public List<EposFilter> getFilters() {
+		return filters;
 	}
 	
-	private NotificationMessage createMessage() throws IOException, SAXException {
-		SimpleNotificationMessage result = new SimpleNotificationMessage();
-		result.addMessageContent(createAIXMBasicMessage());
-		return result;
-	}
-
-	private Element createAIXMBasicMessage() throws IOException, SAXException {
-		return XmlUtils.createDocument(getClass().getResourceAsStream("wxxmTAF.xml")).getDocumentElement();
+	public void addFilter(EposFilter f) {
+		this.filters.add(f);
 	}
 	
+	public void removeFilter(EposFilter f) {
+		this.filters.remove(f);
+	}
+
 }

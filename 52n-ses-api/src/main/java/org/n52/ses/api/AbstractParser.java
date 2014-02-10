@@ -35,8 +35,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.n52.ses.api.event.MapEvent;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.w3c.dom.Element;
 
 

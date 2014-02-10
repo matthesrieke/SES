@@ -52,12 +52,12 @@ import net.opengis.gml.x32.TimeInstantType;
 import net.opengis.gml.x32.TimePeriodDocument;
 import net.opengis.gml.x32.TimePeriodType;
 
-import org.apache.muse.util.xml.XmlUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
 import org.n52.oxf.conversion.gml32.geometry.GeometryWithInterpolation;
 import org.n52.oxf.conversion.gml32.xmlbeans.jts.GMLGeometryFactory;
+import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.exception.GMLParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +103,7 @@ public class GML32Parser {
 
 		//get upper corner and split at " "
 		Element elem = (Element) et.getUpperCorner().getDomNode();
-		String ucString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String ucString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] uc = ucString.split(" ");
 
 		int i = 0;
@@ -117,7 +117,7 @@ public class GML32Parser {
 
 		//get lower corner and split at " "
 		elem = (Element) et.getLowerCorner().getDomNode();
-		String lcString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String lcString = XmlUtil.toString(elem.getFirstChild()).trim();
 		String[] lc = lcString.split(" ");
 
 		i = 0;
@@ -148,7 +148,7 @@ public class GML32Parser {
 		GeometryFactory gf = new GeometryFactory();
 
 		Element elem = (Element) pt.getDomNode();
-		String posString = XmlUtils.toString(elem.getFirstChild()).trim();
+		String posString = XmlUtil.toString(elem.getFirstChild()).trim();
 
 		if (posString.length() == 0) {
 			posString = pt.getPos().getStringValue().trim();

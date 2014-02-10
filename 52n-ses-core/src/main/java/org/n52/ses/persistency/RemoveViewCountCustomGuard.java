@@ -34,7 +34,7 @@ import org.apache.muse.ws.addressing.EndpointReference;
 import org.apache.xmlbeans.XmlException;
 import org.n52.epos.pattern.CustomStatementEvent;
 import org.n52.epos.rules.Rule;
-import org.n52.ses.api.ISESFilePersistence;
+import org.n52.ses.api.Persistence;
 import org.n52.ses.util.common.ConfigurationRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class RemoveViewCountCustomGuard implements CustomStatementEvent {
 		logger.info("Attempting to remove VIEW_COUNT pattern form persistent subscription '{}'.",
 				subMgr.getRuleListener().getEndpointReference().toString());
 		
-		ISESFilePersistence fp = ConfigurationRegistry.getInstance().getFilePersistence();
+		Persistence fp = ConfigurationRegistry.getInstance().getFilePersistence();
 		
 		if (fp != null) {
 			try {

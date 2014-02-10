@@ -26,33 +26,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.util.common;
-import org.apache.muse.core.ResourceManagerListener;
-import org.apache.muse.ws.addressing.EndpointReference;
-import org.apache.muse.ws.addressing.soap.SoapFault;
+package org.n52.ses.io.parser;
 
-/**
- * @author Jan Torben Heuer <jan.heuer@uni-muenster.de>
- *
- * Extension of the {@link ResourceManagerListener}.
- * @param <T> type of the resource
- */
-public interface AdvancedResourceManagerListener<T> {
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * A new Resource has been added
-	 * @param epr the reference to the endpoint of the resource
-	 * @param resource the new resource
-	 * @throws SoapFault if an error occurred on adding
-	 */
-	public void resourceAdded(EndpointReference epr, T resource)  throws SoapFault;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class AbstractParserTest {
+
+	protected Document createDocument(InputStream resourceAsStream) throws SAXException, IOException {
+		DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+		fac.setNamespaceAware(true);
+		Document result;
+		try {
+			result = fac.newDocumentBuilder().parse(resourceAsStream);
+		} catch (ParserConfigurationException e) {
+			throw new IOException(e);
+		}
+		return result;
+	}
 	
-	/**
-	 * A Resource has been removed
-	 * @param epr the endpoint reference of the removed resource
-	 * @param resource the removed resource
-	 * @throws SoapFault if an error occurred while removing
-	 */
-	public void resourceRemoved(EndpointReference epr, T resource)  throws SoapFault;
 	
 }

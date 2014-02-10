@@ -44,7 +44,6 @@ import net.opengis.gml.x32.TimePeriodType;
 import net.opengis.gml.x32.TimePositionType;
 import net.opengis.gml.x32.TimePrimitivePropertyType;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
@@ -55,6 +54,7 @@ import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
 import org.n52.ses.api.exception.GMLParseException;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.n52.ses.io.parser.aixm.jts.AIXMGeometryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

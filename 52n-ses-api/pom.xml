@@ -37,27 +37,6 @@
 			<type>pom</type>
 		</dependency>
 
-		<dependency>
-			<artifactId>amused-wsn-impl</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-core</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-util-xml</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-wsa-soap</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-		<dependency>
-			<artifactId>amused-wsrf-api</artifactId>
-			<groupId>org.n52.amused</groupId>
-		</dependency>
-
 	</dependencies>
 
 </project>

@@ -42,7 +42,6 @@ import net.opengis.gml.x32.LineStringDocument;
 import net.opengis.gml.x32.PointDocument;
 import net.opengis.gml.x32.PolygonDocument;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -52,6 +51,7 @@ import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
 import org.n52.ses.api.exception.GMLParseException;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -979,7 +979,6 @@ public class WXXMParser extends AbstractParser {
 
 	@Override
 	public boolean accept(NotificationMessage message) {
-		@SuppressWarnings("unchecked")
 		Collection<QName> cnames = message.getMessageContentNames();
 
 		for (QName qn : cnames) {
@@ -1032,7 +1031,6 @@ public class WXXMParser extends AbstractParser {
 
 	@Override
 	public List<MapEvent> parse(NotificationMessage message) throws Exception {
-		@SuppressWarnings("unchecked")
 		Collection<QName> cnames = message.getMessageContentNames();
 
 		for (QName qn : cnames) {

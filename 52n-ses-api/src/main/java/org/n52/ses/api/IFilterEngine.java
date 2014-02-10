@@ -28,7 +28,7 @@
  */
 package org.n52.ses.api;
 
-import org.apache.muse.ws.notification.impl.FilterCollection;
+import org.n52.ses.api.event.EposFilterCollection;
 import org.n52.ses.api.ws.INotificationMessage;
 import org.n52.ses.api.ws.ISubscriptionManager;
 
@@ -55,7 +55,7 @@ public interface IFilterEngine  {
 	 * @return true, if the subscriptionmanager was registered at the engine instance
 	 * with a filter
 	 */
-	public abstract boolean registerFilter(ISubscriptionManager subMgr, FilterCollection engineCoveredFilters) throws Exception;
+	public abstract boolean registerFilter(ISubscriptionManager subMgr, EposFilterCollection engineCoveredFilters) throws Exception;
 	
 	/**
 	 * remove a subscription from the filter engine 

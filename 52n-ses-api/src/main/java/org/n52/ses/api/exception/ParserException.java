@@ -26,10 +26,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws;
+package org.n52.ses.api.exception;
 
-public interface EngineCoveredFilter {
+import org.n52.ses.api.AbstractParser;
 
-	Object getEngineSpecificFilter();
+/**
+ * Use this Exception class if a {@link AbstractParser}
+ * failes to parse a given message content.
+ */
+public class ParserException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public ParserException(String string) {
+		super(string);
+	}
 
 }

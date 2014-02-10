@@ -30,14 +30,14 @@ package org.n52.ses.engine.epos;
 
 import java.io.IOException;
 
-
-import org.apache.muse.ws.notification.Filter;
-import org.apache.muse.ws.resource.basefaults.BaseFault;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Assert;
 import org.junit.Test;
-import org.n52.ses.api.ws.EngineCoveredFilter;
+import org.n52.epos.engine.filter.XPathFilter;
+import org.n52.epos.filter.EposFilter;
+import org.n52.epos.filter.FilterInstantiationException;
+import org.n52.epos.filter.PassiveFilter;
 import org.w3c.dom.Element;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -45,21 +45,21 @@ import static org.hamcrest.CoreMatchers.*;
 public class EposFilterFactoryTest {
 	
 	@Test
-	public void shouldCreateXPathFilter() throws BaseFault, XmlException, IOException {
+	public void shouldCreateXPathFilter() throws XmlException, IOException, FilterInstantiationException {
 		EposFilterFactory fac = new EposFilterFactory();
 		
-		Filter filter = fac.newInstance(readFilter("xpath-filter.xml"));
+		EposFilter filter = fac.newInstance(readFilter("xpath-filter.xml"));
 		
-		Assert.assertThat(filter, is(instanceOf(EngineCoveredFilter.class)));
+		Assert.assertThat(filter, is(instanceOf(XPathFilter.class)));
 	}
 	
 	@Test
-	public void shouldCreateFESFilter() throws BaseFault, XmlException, IOException {
+	public void shouldCreateFESFilter() throws XmlException, IOException, FilterInstantiationException {
 		EposFilterFactory fac = new EposFilterFactory();
 		
-		Filter filter = fac.newInstance(readFilter("fes-filter.xml"));
+		EposFilter filter = fac.newInstance(readFilter("fes-filter.xml"));
 		
-		Assert.assertThat(filter, is(instanceOf(EngineCoveredFilter.class)));
+		Assert.assertThat(filter, is(instanceOf(PassiveFilter.class)));
 	}
 
 	private Element readFilter(String file) throws XmlException, IOException {

@@ -43,11 +43,10 @@ import net.opengis.fes.x20.UnaryLogicOpType;
 import net.opengis.swe.x101.QuantityDocument;
 import net.opengis.swe.x101.UomPropertyType;
 
-import org.apache.muse.util.xml.XmlUtils;
-import org.apache.muse.ws.notification.faults.SubscribeCreationFailedFault;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.n52.oxf.conversion.unit.NumberWithUOM;
+import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.IUnitConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,7 +178,7 @@ public class EMLHelper {
 				QuantityDocument sweQ = (QuantityDocument) xmlContent;
 				if (sweQ.getQuantity() != null) {
 					if (!sweQ.getQuantity().isSetValue()) {
-						throw new SubscribeCreationFailedFault("There was" +
+						throw new IllegalStateException("There was" +
 								" no Value specified in the swe:Quantity element");
 					}
 					Double value = sweQ.getQuantity().getValue();
@@ -214,11 +213,9 @@ public class EMLHelper {
 
 		else if (VALUE_REFERENCE_QNAME.equals(etQn)) {
 			Element elem = (Element) et.getDomNode();
-			String urn = XmlUtils.toString(elem.getFirstChild()).trim();
+			String urn = XmlUtil.toString(elem.getFirstChild()).trim();
 			urn = urn.replaceAll(":", "__").replaceAll("\\.", "_");
-			XmlUtils.setElementText(elem, urn);
-			
-			
+			elem.setNodeValue(urn);
 		}
 
 	}

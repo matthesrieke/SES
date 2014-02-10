@@ -48,13 +48,13 @@ import net.opengis.om.x20.OMObservationType;
 import net.opengis.om.x20.OMProcessPropertyType;
 import net.opengis.om.x20.TimeObjectPropertyType;
 
-import org.apache.muse.ws.notification.NotificationMessage;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
 import org.joda.time.DateTime;
 import org.n52.oxf.xmlbeans.tools.XmlUtil;
 import org.n52.ses.api.AbstractParser;
 import org.n52.ses.api.event.MapEvent;
+import org.n52.ses.api.ws.NotificationMessage;
 import org.w3c.dom.Element;
 
 /**

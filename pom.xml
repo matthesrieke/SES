@@ -44,7 +44,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.header.file>${basedir}/src/main/config/52n_license_header.txt</license.header.file>
-		<muse.version>1.0.1</muse.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<logback.version>1.0.7</logback.version>
 		<ses.logfile.name>${catalina.base:-.}/logs/52n-ses</ses.logfile.name>
@@ -341,51 +340,6 @@
 				<version>1.6.2</version>
 			</dependency>
 
-			<dependency>
-				<artifactId>amused-wsn-api</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-core</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-wsa-soap</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-util</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-util-xml</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-wsrf-api</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-wsrf-impl</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>amused-wsn-impl</artifactId>
-				<groupId>org.n52.amused</groupId>
-				<version>${muse.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.n52.amused</groupId>
-				<artifactId>amused-platform-mini</artifactId>
-				<version>${muse.version}</version>
-			</dependency>
 
 			<dependency>
 				<groupId>org.n52.sensorweb</groupId>
