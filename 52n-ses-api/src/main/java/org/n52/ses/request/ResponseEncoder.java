@@ -26,28 +26,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.request;
 
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+public interface ResponseEncoder {
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+	public boolean supportsEncodingOf(Request request);
 
-	private URI uri;
+	public byte[] encode(Response response, Request request) throws UnsupportedEncodingException;
 
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
-
-	@Override
-	public void writeTo(Result result) {
-		
-	}
+	public String getTargetCharset(Request request);
 
 }

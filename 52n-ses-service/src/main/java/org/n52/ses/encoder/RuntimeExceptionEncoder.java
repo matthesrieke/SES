@@ -26,28 +26,40 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.encoder;
 
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import org.apache.http.HttpStatus;
+import org.apache.http.entity.ContentType;
+import org.n52.ses.request.ExceptionEncoder;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+public class RuntimeExceptionEncoder implements ExceptionEncoder<RuntimeException> {
 
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
+	@Override
+	public byte[] writeException(RuntimeException exception) throws UnsupportedEncodingException {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("<ExceptionReport>");
+		sb.append(exception.getMessage());
+		sb.append("</ExceptionReport>");
+		
+		return sb.toString().getBytes(getCharset());
 	}
 
 	@Override
-	public void writeTo(Result result) {
-		
+	public String getCharset() {
+		return "UTF-8";
+	}
+
+	@Override
+	public int resolveHttpStatus(RuntimeException e) {
+		return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+	}
+
+	@Override
+	public String resolveContentType(RuntimeException e) {
+		return ContentType.APPLICATION_XML.getMimeType();
 	}
 
 }

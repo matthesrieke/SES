@@ -26,28 +26,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.handler;
 
-import java.net.URI;
+import java.util.ServiceLoader;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import org.n52.ses.request.RequestHandler;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
+public class HandlerModule extends AbstractModule {
 
 	@Override
-	public void writeTo(Result result) {
-		
+	protected void configure() {
+		Multibinder<RequestHandler> multibinder = Multibinder.newSetBinder(
+				binder(), RequestHandler.class);
+
+		ServiceLoader<RequestHandler> l = ServiceLoader
+				.load(RequestHandler.class);
+
+		for (RequestHandler h : l) {
+			multibinder.addBinding().toInstance(h);
+		}		
 	}
 
 }

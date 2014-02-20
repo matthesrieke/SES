@@ -252,7 +252,7 @@ public class ConfigurationRegistry {
 	/**
 	 * the location of the config file (relative to WEB-INF/classes)
 	 */
-	public static final String CONFIG_FILE = "sesconfig/ses_config.xml";
+	public static final String CONFIG_FILE = "/sesconfig/ses_config.xml";
 
 	/**
 	 * use gzip compression for outgoing requests?
@@ -313,7 +313,7 @@ public class ConfigurationRegistry {
 		String defaultURI = this.parameters.getProperty(SES_INSTANCE);
 		try {
 			if (defaultURI != null && !defaultURI.isEmpty()) {
-				this.sesPortTypeEPR = new EndpointReferenceImpl(new URI(defaultURI));
+				this.sesPortTypeEPR = new EndpointReferenceImpl(new URI(defaultURI.trim()));
 			}
 			else {
 				this.sesPortTypeEPR = new EndpointReferenceImpl(new URI("http://localhost/URIfailure"));				
@@ -355,13 +355,8 @@ public class ConfigurationRegistry {
 	 * @return The singleton instance of the {@link ConfigurationRegistry}
 	 */
 	public static synchronized ConfigurationRegistry getInstance() {
-		while (_instance == null) {
-			try {
-				logger.info("Thread {} is waiting for the instance...", Thread.currentThread().getName());
-				ConfigurationRegistry.class.wait(5000);
-			} catch (InterruptedException e) {
-				logger.warn(e.getMessage(), e);
-			}
+		if (_instance == null) {
+			init();
 		}
 		
 		return _instance;

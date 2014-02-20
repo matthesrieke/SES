@@ -26,28 +26,47 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.request;
 
-import java.net.URI;
+public class ResponseParameters {
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+	private String contentEncoding;
+	private String contentType;
+	private int contentLength;
+	private String characterEncoding;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
-
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
+	public void setContentEncoding(String string) {
+		this.contentEncoding = string;
 	}
 
-	@Override
-	public void writeTo(Result result) {
-		
+	public void setContentType(String string) {
+		this.contentType = string;
 	}
+
+	public void setContentLength(int contentLength) {
+		this.contentLength = contentLength;
+	}
+
+	public void setCharacterEncoding(String displayName) {
+		this.characterEncoding = displayName;
+	}
+
+	public String getContentEncoding() {
+		return contentEncoding;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public int getContentLength() {
+		return contentLength;
+	}
+
+	public String getCharacterEncoding() {
+		return characterEncoding;
+	}
+	
+	
 
 }

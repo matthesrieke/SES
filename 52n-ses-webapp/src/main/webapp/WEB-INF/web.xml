@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="52n-ses" version="2.5" metadata-complete="true"
+	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>52°North Sensor Event Service</display-name>
+
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.n52.ses.servlet.BaseServlet$GuiceServletConfig</listener-class>
+	</listener>
+
+
+<!-- 	<servlet-mapping> -->
+<!-- 		<servlet-name>default</servlet-name> -->
+<!-- 		<url-pattern>*.js</url-pattern> -->
+<!-- 		<url-pattern>*.css</url-pattern> -->
+<!-- 		<url-pattern>*.png</url-pattern> -->
+<!-- 		<url-pattern>*.gif</url-pattern> -->
+<!-- 		<url-pattern>*.jpg</url-pattern> -->
+<!-- 	</servlet-mapping> -->
+
+	<security-constraint>
+		<display-name>login-secured config page</display-name>
+		<web-resource-collection>
+			<web-resource-name>config page</web-resource-name>
+			<url-pattern>/config/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>ses-admins</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+<!-- 			transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+	<!-- uncomment the following section if you want to secure the service via HTTP basic authencation.
+	the credentials have to be set up within the servlet container (e.g. tomcat-users.xml). For the service
+	being able to start, they have to be provided in the Service config (e.g. via the Config frontend)-->
+	<!-- <security-constraint>
+		<display-name>publisher basic authentication</display-name>
+		<web-resource-collection>
+			<web-resource-name>publisher</web-resource-name>
+			<url-pattern>/</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>publisher</role-name>
+			<role-name>consumer</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint> -->
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+	<security-role>
+		<role-name>ses-admins</role-name>
+		<role-name>admin</role-name>
+		<role-name>publisher</role-name>
+		<role-name>consumer</role-name>
+	</security-role>
+</web-app>

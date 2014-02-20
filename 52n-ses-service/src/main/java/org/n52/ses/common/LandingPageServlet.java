@@ -26,28 +26,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.common;
 
-import java.net.URI;
+import javax.servlet.http.HttpServlet;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import com.google.inject.Singleton;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+@Singleton
+public class LandingPageServlet extends HttpServlet {
 
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
-
-	@Override
-	public void writeTo(Result result) {
-		
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 }

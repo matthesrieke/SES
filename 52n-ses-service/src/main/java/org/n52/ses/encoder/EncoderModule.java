@@ -26,28 +26,39 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.encoder;
 
-import java.net.URI;
+import java.util.ServiceLoader;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import org.n52.ses.request.ExceptionEncoder;
+import org.n52.ses.request.ResponseEncoder;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
 
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
+public class EncoderModule extends AbstractModule {
 
 	@Override
-	public void writeTo(Result result) {
+	protected void configure() {
+		Multibinder<ResponseEncoder> multibinder = Multibinder.newSetBinder(
+				binder(), ResponseEncoder.class);
+
+		ServiceLoader<ResponseEncoder> l = ServiceLoader
+				.load(ResponseEncoder.class);
+
+		/*
+		 * bind all service loaded modules
+		 */
+		for (ResponseEncoder responseEncoder : l) {
+			multibinder.addBinding().toInstance(responseEncoder);
+		}
 		
+		/*
+		 * bind the exception encoders
+		 */
+	    bind(new TypeLiteral<ExceptionEncoder<RuntimeException>>(){})
+	    	.to(new TypeLiteral<RuntimeExceptionEncoder>(){});
 	}
 
 }

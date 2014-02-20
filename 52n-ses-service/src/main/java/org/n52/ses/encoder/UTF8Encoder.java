@@ -26,28 +26,45 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.encoder;
 
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import org.n52.ses.request.Request;
+import org.n52.ses.request.Response;
+import org.n52.ses.request.ResponseEncoder;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
-
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
+public class UTF8Encoder implements ResponseEncoder {
 
 	@Override
-	public void writeTo(Result result) {
-		
+	public boolean supportsEncodingOf(Request request) {
+		Map<String, String> accepts = request.getAcceptHeaders();
+		if (accepts.containsKey("Accept-Charset")) {
+			String header = accepts.get("Accept-Charset").trim();
+			return header.equalsIgnoreCase("UTF-8");
+		}
+		return true;
 	}
 
+	
+	@Override
+	public String getTargetCharset(Request request) {
+		String charset = request.getAcceptHeaders().get("Accept-Charset");
+		
+		if (charset == null) {
+			charset = "UTF-8";
+		}
+		
+		return charset;
+	}
+	
+	@Override
+	public byte[] encode(Response response, Request request) throws UnsupportedEncodingException {
+		String charset = getTargetCharset(request);
+		
+		return response.getContent().toString().getBytes(charset);
+	}
+
+	
 }

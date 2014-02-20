@@ -26,28 +26,43 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.handler;
 
-import java.net.URI;
+import java.util.List;
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.ContentType;
+import org.n52.ses.request.Request;
+import org.n52.ses.request.RequestHandler;
+import org.n52.ses.request.Response;
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
+public class GetCapabilitiesHandler implements RequestHandler {
 
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
+	@Override
+	public boolean supportsHandlingOf(Request request) {
+		if (request.getMethod() != HttpGet.METHOD_NAME) {
+			return false;
+		}
+		
+		List<String> requestParam = request.getParameters().get("request");
+		if (requestParam != null &&
+				requestParam.contains("GetCapabilities")) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
-	public void writeTo(Result result) {
-		
+	public Response process(Request wrappedRequest) {
+		Response result = new Response();
+		result.setContent("<xml test=\"true\" />");
+		return result;
+	}
+
+	@Override
+	public String getTargetContentType(Request request) {
+		return ContentType.APPLICATION_XML.getMimeType();
 	}
 
 }

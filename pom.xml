@@ -32,11 +32,12 @@
 
 	<modules>
 		<module>52n-ses-api</module>
+		<module>52n-ses-service</module>
 		<module>52n-ses-utils</module>
 		<module>52n-ses-io</module>
 		<module>52n-ses-service-access</module>
 		<module>52n-ses-tests</module>
-		<module>52n-ses-core</module>
+<!-- 		<module>52n-ses-core</module> -->
 		<module>52n-ses-engine-epos</module>
 		<module>52n-ses-webapp</module>
 	</modules>
@@ -57,6 +58,7 @@
 		<oxf.version>2.0.0-alpha.4-SNAPSHOT</oxf.version>
 		<n52.xml.version>1.1.5</n52.xml.version>
 		<epos.version>0.0.1-SNAPSHOT</epos.version>
+		<guice-version>3.0</guice-version>
 		<currentYear>2014</currentYear>	
 	</properties>
 
@@ -202,6 +204,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.n52.sensorweb.ses</groupId>
+				<artifactId>52n-ses-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.sensorweb.ses</groupId>
 				<artifactId>52n-ses-bindings</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -268,6 +275,27 @@
 				<type>pom</type>
 			</dependency>
 
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>${guice-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject.extensions</groupId>
+				<artifactId>guice-servlet</artifactId>
+				<version>${guice-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject.extensions</groupId>
+				<artifactId>guice-multibindings</artifactId>
+				<version>${guice-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.n52.sensorweb</groupId>
 				<artifactId>oxf-common</artifactId>

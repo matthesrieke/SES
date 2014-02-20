@@ -40,12 +40,11 @@
 				<version>2.1.1</version>
 				<configuration>
 					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-					<webXml>src/main/config/web.xml</webXml>
 					<webResources>
-						<resource>
-							<directory>src/main/muse-webcontent</directory>
-							<filtering>false</filtering>
-						</resource>
+<!-- 						<resource> -->
+<!-- 							<directory>src/main/muse-webcontent</directory> -->
+<!-- 							<filtering>false</filtering> -->
+<!-- 						</resource> -->
 						<!-- <resource> <directory>src/main/config/sesconfig</directory> <filtering>true</filtering> 
 							<targetPath>WEB-INF/classes/sesconfig</targetPath> </resource> -->
 					</webResources>
@@ -60,7 +59,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.n52.sensorweb.ses</groupId>
-			<artifactId>52n-ses-core</artifactId>
+			<artifactId>52n-ses-service</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.n52.sensorweb.ses</groupId>

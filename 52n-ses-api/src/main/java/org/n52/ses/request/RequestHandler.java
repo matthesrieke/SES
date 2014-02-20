@@ -26,28 +26,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.ses.api.ws.impl;
+package org.n52.ses.request;
 
-import java.net.URI;
+public interface RequestHandler {
 
-import javax.xml.transform.Result;
-import javax.xml.ws.EndpointReference;
+	public boolean supportsHandlingOf(Request request);
+	
+	public Response process(Request request);
 
-/**
- * An implementation of the W3C WS-A endpoint reference.
- * TODO: implement
- */
-public class EndpointReferenceImpl extends EndpointReference {
-
-	private URI uri;
-
-	public EndpointReferenceImpl(URI uri) {
-		this.uri = uri;
-	}
-
-	@Override
-	public void writeTo(Result result) {
-		
-	}
+	public String getTargetContentType(Request request);
 
 }
